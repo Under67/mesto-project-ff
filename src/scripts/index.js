@@ -6,7 +6,7 @@ import {placesList, createCard, removeCard, likeCard} from './card.js';
 
 
 initialCards.forEach(function(item) {
-  const cloneCard = createCard(item.name, item.link, removeCard, setImagePopup, likeCard);
+  const cloneCard = createCard(item.name, item.link, removeCard, handleImageClick, likeCard);
   placesList.append(cloneCard);
 });
 
@@ -40,13 +40,13 @@ component.formProfile.addEventListener('submit', function(evt) {
 
 component.formCard.addEventListener('submit', function(evt) {
   evt.preventDefault();
-  const NewCard = createCard(component.inputCardName.value, component.inputCardLink.value, removeCard, setImagePopup, likeCard);
-  placesList.prepend(NewCard);
+  const newCard = createCard(component.inputCardName.value, component.inputCardLink.value, removeCard, handleImageClick, likeCard);
+  placesList.prepend(newCard);
   closeModal(component.popupCard);
   component.formCard.reset();
 });
 
-function setImagePopup(name, link) {
+function handleImageClick(name, link) {
   component.popupPic.src = link;
   component.popupPic.alt = name;
   component.popupCaption.textContent = name;
