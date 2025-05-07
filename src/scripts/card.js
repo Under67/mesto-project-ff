@@ -1,10 +1,9 @@
-import { userId } from "./index";
 import { deleteCard, deleteLikeCard, setLikeCard} from "./api";
 
 const cardTemplate = document.querySelector('#card-template').content;
 const placesList= document.querySelector('.places__list');
 
-function createCard(card, removeCard, handleImageClick, likeCard) {
+function createCard(card, removeCard, handleImageClick, likeCard, userId) {
   const cloneCard = cardTemplate.querySelector('.card').cloneNode(true);
   const cardDeleteButton = cloneCard.querySelector('.card__delete-button');
   const cardImg = cloneCard.querySelector('.card__image');
@@ -26,18 +25,27 @@ function createCard(card, removeCard, handleImageClick, likeCard) {
   cardLike.addEventListener('click', function () {
     if (cardLike.classList.contains('card__like-button_is-active')) {
       deleteLikeCard(card['_id'])
-      .then((card) => cardLikeCount.textContent = card.likes.length);
+      .then((card) => {
+        cardLikeCount.textContent = card.likes.length;
+        return likeCard(cardLike);
+      })
+      .catch ((err) => console.log('Поймали ошибку! Вот она: ', err.message));
     } else {
       setLikeCard(card['_id'])
-      .then((card) => cardLikeCount.textContent = card.likes.length);
+      .then((card) => {
+        cardLikeCount.textContent = card.likes.length;
+        return likeCard(cardLike);
+      })
+      .catch ((err) => console.log('Поймали ошибку! Вот она: ', err.message));
     }
-    cardLikeCount.textContent = card.likes.length;
-    return likeCard(cardLike);
   })
     if (card.owner['_id'] === userId) {
       cardDeleteButton.addEventListener('click', function() {
-      deleteCard(card['_id']); 
-      return removeCard(cloneCard);
+        deleteCard(card['_id']) 
+        .then(() => {
+          return removeCard(cloneCard);
+        })
+        .catch ((err) => console.log('Поймали ошибку! Вот она: ', err.message));
       })
     } else {
       cardDeleteButton.remove();

@@ -1,30 +1,26 @@
-import { closeModal } from "./modal.js";
-
-function checkResponse(res) {
-  if (res.ok) {
-    return res.json();
-  }
-  return Promise.reject(`Ошибка: ${res.status}`);
-}
+import {closeModal} from "./modal.js";
 
 function handleSubmit(request, evt) {
     const button = evt.submitter;
     evt.submitter.textContent = 'Сохранить...';
-    button.disabled = false;
+    button.disabled = true;
     button.classList.remove('popup__button_disabled');
     evt.preventDefault()
+    const popup = evt.target.closest('.popup')
+    const popupForm = popup.querySelector('.popup__form')
 
   request()
     .then(() => {
-      button.disabled = true;
+      closeModal(popup)
     })
     .catch((err) => {
       console.error(`Ошибка: ${err}`);
     })
     .finally(() => {
       evt.submitter.textContent = 'Сохранить';
-      closeModal(evt.target.closest('.popup'))
+      button.disabled = false;
+      popupForm.reset();
     })
 }
 
-export {checkResponse, handleSubmit}
+export {handleSubmit}

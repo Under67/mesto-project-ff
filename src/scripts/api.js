@@ -1,5 +1,3 @@
-import { checkResponse, handleSubmit } from "./additional.js";
-
 const config = {
   baseUrl: 'https://mesto.nomoreparties.co/v1/wff-cohort-38',
   headers: {
@@ -81,6 +79,11 @@ function postAvatar (pic) {
   .then(checkResponse)
 }
 
+function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
 
-
-export {patchUserProfile, getInitialCards, getInfoProfile, postCard, deleteCard, setLikeCard, deleteLikeCard, postAvatar}
+export {patchUserProfile, getInitialCards, getInfoProfile, postCard, deleteCard, setLikeCard, deleteLikeCard, postAvatar, checkResponse}
