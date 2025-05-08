@@ -12,6 +12,7 @@ function handleSubmit(request, evt) {
   request()
     .then(() => {
       closeModal(popup)
+      popupForm.reset();
     })
     .catch((err) => {
       console.error(`Ошибка: ${err}`);
@@ -19,7 +20,6 @@ function handleSubmit(request, evt) {
     .finally(() => {
       evt.submitter.textContent = 'Сохранить';
       button.disabled = false;
-      popupForm.reset();
     })
 }
 

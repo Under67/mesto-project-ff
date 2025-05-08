@@ -60,14 +60,6 @@ function setLikeCard (cardId) {
   .then(checkResponse)
 }
 
-function deleteLikeCard (cardId) {
-  return request('/cards/likes' + `/${cardId}`, {
-    method : 'DELETE',
-    headers : config.headers,
-  })
-  .then(checkResponse)
-}
-
 function postAvatar (pic) {
   return request('/users/me/avatar', {
     method : 'PATCH',
@@ -75,6 +67,14 @@ function postAvatar (pic) {
     body : JSON.stringify({
       avatar : pic
     })
+  })
+  .then(checkResponse)
+}
+
+function deleteLikeCard (cardId) {
+  return request('/cards/likes' + `/${cardId}`, {
+    method : 'DELETE',
+    headers : config.headers,
   })
   .then(checkResponse)
 }
